@@ -1,6 +1,9 @@
 
 package com.bk.railway.server;
 
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import org.apache.commons.cli.CommandLine;
@@ -12,6 +15,7 @@ import org.apache.commons.cli.PosixParser;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.servlet.Context;
 import org.mortbay.jetty.servlet.ServletHolder;
+import org.mortbay.thread.QueuedThreadPool;
 
 import com.bk.railway.servlet.CaptchaServlet;
 
@@ -40,6 +44,7 @@ public class CaptchaServer {
             context.addServlet(new ServletHolder(new CaptchaServlet()), "/handle");
             
             LOG.info("port=" + port);
+            server.setThreadPool(new QueuedThreadPool(2));
             
             server.start();
 
